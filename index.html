@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>Calcite Maps and Bootstrap - 4.10</title>
@@ -13,6 +14,9 @@
 
   <!-- ArcGIS JS 4 -->
   <link rel="stylesheet" href="https://js.arcgis.com/4.10/esri/css/main.css">
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -34,17 +38,20 @@
           <span></span>
         </div>
       </a>
+
       <ul class="dropdown-menu">
         <li class="active"><a class="hidden-md hidden-lg" href="#mapTab"
             aria-controls="mapTab" role="tab" data-toggle="tab"> Map</a></li>
         <li><a class="hidden-md hidden-lg" href="#sceneTab" aria-controls="sceneTab"
             role="tab" data-toggle="tab"> Scene</a></li>
+        <li><a role="button" data-target="#panelLayers" aria-haspopup="true"><span
+          class="glyphicon glyphicon-duplicate"></span> Capas </a></li>
         <li><a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span
-              class="glyphicon glyphicon-th-large"></span> Basemaps</a></li>
+              class="glyphicon glyphicon-th-large"></span> Base del Mapa</a></li>
         <li><a role="button" data-target="#panelSettings" aria-haspopup="true"><span
-              class="glyphicon glyphicon-cog"></span> Settings</a></li>
+              class="glyphicon glyphicon-cog"></span> Ajustes</a></li>
         <li><a role="button" id="calciteToggleNavbar" aria-haspopup="true"><span
-              class="glyphicon glyphicon-fullscreen"></span> Full Map</a></li>
+              class="glyphicon glyphicon-fullscreen"></span> Pantalla Completa </a></li>
       </ul>
     </div>
     <!-- Title -->
@@ -76,11 +83,11 @@
   <div class="calcite-map calcite-map-absolute">
     <div id="tabContainer" class="tab-content">
       <div id="mapTab" class="tab-pane fade in active" role="tabpanel">
-        <div id="mapViewDiv"></div>
+        <div id="mapViewDiv">
+            <div id="infoDiv"></div>
+        </div>
       </div>
-      <div id="sceneTab" class="tab-pane fade" role="tabpanel">
-        <div id="sceneViewDiv"></div>
-      </div>
+
     </div>
   </div>
   <!-- /.calcite-map -->
@@ -88,6 +95,28 @@
   <!-- Panels -->
 
   <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
+
+    <!-- Layers Panel -->
+
+    <div id="panelLayers" class="panel collapse">
+      <div id="headingLayers" class="panel-heading" role="tab">
+        <div class="panel-title">
+          <a class="panel-toggle collapsed" role="button" data-toggle="collapse"
+            href="#collapseLayers" aria-expanded="false" aria-controls="collapseLayers"><span
+              class="glyphicon glyphicon-duplicate" aria-hidden="true"></span><span
+              class="panel-label">Capas</span></a>
+          <a class="panel-close" role="button" data-toggle="collapse"
+            data-target="#panelLayers"><span class="esri-icon esri-icon-close"
+              aria-hidden="true"></span></a>
+        </div>
+      </div>
+      <div id="collapseLayers" class="panel-collapse collapse" role="tabpanel"
+        aria-labelledby="headingLayers">
+        <div class="panel-body">
+          <div id="layerPanelDiv"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- Basemaps Panel -->
 
@@ -222,6 +251,8 @@
   <script src="https://js.arcgis.com/4.10/"></script>
 
   <script src="js/config.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
 </html>
