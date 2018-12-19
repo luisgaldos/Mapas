@@ -50,6 +50,8 @@
               KML Layers</a></li>
           <li><a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>
               Basemaps</a></li>
+          <li><a role="button" data-target="#panelMeasure" aria-haspopup="true"><span class="glyphicon glyphicon-arrow-right"></span>
+              Measure</a></li>
           <li><a role="button" data-target="#panelSettings" aria-haspopup="true"><span class="glyphicon glyphicon-cog"></span>
               Settings</a></li>
           <li><a role="button" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span>
@@ -77,7 +79,7 @@
     </nav>
     <!--/.calcite-navbar -->
 
-    <!-- Map  -->
+    <!-- Map Container  -->
 
     <div class="calcite-map calcite-map-absolute">
       <div id="tabContainer" class="tab-content">
@@ -95,7 +97,7 @@
 
     <div class="calcite-panels calcite-panels-right calcite-text-light calcite-bg-dark panel-group">
 
-      <!-- Basemaps Panel -->
+      <!-- KML Layers Panel -->
 
       <div id="panelKMLLayers" class="panel collapse">
         <div id="headingKMLLayers" class="panel-heading" role="tab">
@@ -110,6 +112,25 @@
         <div id="collapseKMLLayers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingKMLLayers">
           <div class="panel-body">
             <div id="KMLLayersPanelDiv"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Measure Panel -->
+
+      <div id="panelMeasure" class="panel collapse">
+        <div id="headingMeasure " class="panel-heading" role="tab">
+          <div class="panel-title">
+            <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseMeasure "
+              aria-expanded="false" aria-controls="collapseMeasure "><span class="glyphicon glyphicon-arrow-right"
+                aria-hidden="true"></span><span class="panel-label">Measure</span></a>
+            <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelMeasure "><span class="esri-icon esri-icon-close"
+                aria-hidden="true"></span></a>
+          </div>
+        </div>
+        <div id="collapseMeasure " class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingMeasure ">
+          <div class="panel-body">
+            <div id="measurePanelDiv"></div>
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 
-
 require([
   "esri/Map",
   "esri/views/MapView",
@@ -168,6 +167,10 @@ require([
       view: app.mapView
     });
     app.mapView.ui.add(measurementWidget, "top-right");
+
+    var btnClose = document.createElement("button");
+    btnClose.innerHTML = "Exit";
+    //document.getElementsByClassName('esri-area-measurement-3d__container').appendChild(btnClose);
 
     //  3D measure
     var measurementWidget = new AreaMeasurement3D({
