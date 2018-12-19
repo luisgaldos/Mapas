@@ -57,8 +57,8 @@ function createLayer(KMLLayer, url) {
 function createMap(Map) {
     // Map
     map = new Map({
-        basemap: app.basemap,
-        layers: arrayLayers
+        basemap: app.basemap
+        //layers: arrayLayers
     });
 }
 
