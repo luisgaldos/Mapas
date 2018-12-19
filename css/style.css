@@ -5,3 +5,12 @@ body {
   height: 100%;
   width: 100%;
 }
+
+.dropdown-menu {
+  min-height: 100vh;
+}
+
+br {
+  display: hidden;
+  content: '';
+}
