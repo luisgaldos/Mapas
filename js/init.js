@@ -3,17 +3,26 @@ require([
   "esri/Map",
   "esri/views/MapView",
   "esri/views/SceneView",
+  
 
   // Widgets
   "esri/widgets/Search",
   "esri/widgets/BasemapGallery",
   "esri/widgets/ScaleBar",
+  "esri/widgets/Locate",
+  "esri/widgets/Sketch",        // For Draw
   "esri/widgets/DistanceMeasurement2D",
   "esri/widgets/AreaMeasurement2D",
+  "esri/widgets/DirectLineMeasurement3D",
   "esri/widgets/AreaMeasurement3D",
 
   //Layers
   "esri/layers/KMLLayer",
+  "esri/layers/WMSLayer",
+  "esri/layers/GraphicsLayer",  // For Draw
+  "esri/layers/FeatureLayer",
+  "esri/layers/MapImageLayer",
+  "esri/layers/TileLayer",
 
   "esri/core/watchUtils",
   // Calcite Maps
@@ -35,10 +44,18 @@ require([
   Search,
   Basemaps,
   ScaleBar,
+  Locate,
+  Sketch, 
   DistanceMeasurement2D,
   AreaMeasurement2D,
+  DirectLineMeasurement3D,
   AreaMeasurement3D,
   KMLLayer,
+  WMSLayer,
+  GraphicsLayer,
+  FeatureLayer,
+  MapImageLayer,
+  TileLayer,
   watchUtils,
   CalciteMaps,
   CalciteMapsArcGIS,
@@ -75,58 +92,26 @@ require([
      *
      ******************************************************************/
 
-    // KML Layers
-    var layer1 = new KMLLayer({
-      url: URLKMZTest1// url to the service
-    });
-    var layer2 = new KMLLayer({
-      url: URLKMZTest2// url to the service
-    });
-    var layer3 = new KMLLayer({
-      url: URLKMZTest3// url to the service
-    });
-    var layer4 = new KMLLayer({
-      url: URLKMZTest4// url to the service
-    });
+      // KML Layers
+    
 
-    kmlLayers.push(layer1);
-    kmlLayers.push(layer2);
-    kmlLayers.push(layer3);
-    kmlLayers.push(layer4);
-
-    // Add layers to Panel
-    var panel = document.getElementById('KMLLayersPanelDiv');
-
-    var ul = document.createElement('ul');
-    panel.appendChild(ul);
-
-    kmlLayers.forEach(function (item) {
-      var li = document.createElement('li');
-      li.innerHTML = item.title;
-      li.style.fontSize = "1.4em";
-      ul.appendChild(li);
-
-      ul.style.listStyle = "none";
-      
-      var checkbox = document.createElement("INPUT");
-      checkbox.setAttribute("type", "checkbox");
-      checkbox.addEventListener('change', function () {
-        if (this.checked) {
-          item.visible = true;
-        } else {
-          item.visible = false;
-        }
+    let layer;
+    for(let i = 0; i < serviciosKML.length; i++) {
+      layer = new KMLLayer ({
+        url: serviciosKML[i]// url to the service
       });
-      li.appendChild(checkbox);
-      checkbox.checked = true;
-      checkbox.style.cssFloat = "right";
+      kmlLayers.push(layer);
+    }
 
-    });
+    // Load KML Layers Panel
+    loadKMLLayersPanel();
+
+    graphicsLayer = new GraphicsLayer();
 
     // Map
-    var map = new Map({
+    map = new Map({
       basemap: app.basemap,
-      layers: [layer1, layer2, layer3, layer4]
+      layers: [graphicsLayer]   // Add draw layer to map
     });
 
     // 2D view
@@ -143,8 +128,13 @@ require([
 
     app.mapView.when(function () {
       CalciteMapsArcGIS.setPopupPanelSync(app.mapView);
+      sketchWidget = new Sketch({
+        layer: graphicsLayer,
+        view: app.mapView,
+        container: DRAW_PANEL
+      });
+      //app.mapView.ui.add(sketchWidget, "top-right");
     });
-
 
     // 3D view
     app.sceneView = new SceneView({
@@ -162,31 +152,55 @@ require([
       CalciteMapsArcGIS.setPopupPanelSync(app.sceneView);
     });
 
-    // 2D measure
-    var measurementWidget = new AreaMeasurement2D({
-      view: app.mapView
+    // 2D Distance Measure Panel
+    distance2DmeasureWidget = new DistanceMeasurement2D({
+      view: app.mapView,
+      container: DISTANCE_2D_MEASURE_PANEL
     });
-    app.mapView.ui.add(measurementWidget, "top-right");
 
-    var btnClose = document.createElement("button");
-    btnClose.innerHTML = "Exit";
-    //document.getElementsByClassName('esri-area-measurement-3d__container').appendChild(btnClose);
+    document.querySelector("#distanceMeasure2DPanelDiv > div > div > button").innerHTML = "Medir Distancia";
 
-    //  3D measure
-    var measurementWidget = new AreaMeasurement3D({
-      view: app.sceneView
+    // 3D Distance Measure Panel
+    distance3DmeasureWidget = new DirectLineMeasurement3D({
+      view: app.sceneView,
+      container: DISTANCE_3D_MEASURE_PANEL
     });
+
+    document.querySelector("#distanceMeasure3DPanelDiv > div > div > button").innerHTML = "Medir Distancia";
+
+    // 2D Area Measure Panel
+    area2DmeasureWidget = new AreaMeasurement2D({
+      view: app.mapView,
+      container: AREA_2D_MEASURE_PANEL
+    });
+
+    document.querySelector("#areaMeasure2DPanelDiv > div > div > button").innerHTML = "Medir área";
+
+    // 3D Area Measure Panel
+    area2DmeasureWidget = new AreaMeasurement3D({
+      view: app.sceneView,
+      container: AREA_3D_MEASURE_PANEL
+    });
+
+    document.querySelector("#areaMeasure3DPanelDiv > div > div > button").innerHTML = "Medir área";
 
     // Set the active view to scene
     setActiveView(app.mapView);
 
     // Create the scale bar and add it to the bottom left corner of the view
-    var scaleBar = new ScaleBar({
+    scaleBar = new ScaleBar({
       view: app.mapView
     });
     app.mapView.ui.add(scaleBar, {
       position: "bottom-left"
     });
+
+    // Create the location widget and add it to the top left corner of the view
+    locateWidget = new Locate({
+      view: app.activeView  // Attaches the Locate button to the view
+    });
+
+    app.activeView.ui.add(locateWidget, "top-left");
 
     // Create the search widget and add it to the navbar instead of view
     app.searchWidget = new Search({
@@ -211,21 +225,6 @@ require([
      * Synchronize the view, search and popup
      *
      ******************************************************************/
-
-    // Views
-    function setActiveView(view) {
-
-      if (view == app.mapView) {
-        kmlLayers.map(e => e.visible = true);
-
-      } else {
-        kmlLayers = [];
-
-        app.sceneView.ui.add(measurementWidget, "top-right");
-      }
-
-      app.activeView = view;
-    }
 
     function syncViews(fromView, toView) {
       const viewPt = fromView.viewpoint.clone();
@@ -264,154 +263,5 @@ require([
         syncSearch(app.activeView);
       });
     });
-
-    /******************************************************************
-     *
-     * Apply Calcite Maps CSS classes to change application on the fly
-     *
-     * For more information about the CSS styles or Sass build visit:
-     * http://github.com/esri/calcite-maps
-     *
-     ******************************************************************/
-
-    const cssSelectorUi = [document.querySelector(".calcite-navbar"),
-    document.querySelector(".calcite-panels")
-    ];
-    const cssSelectorMap = document.querySelector(".calcite-map");
-
-    // Theme - light (default) or dark theme
-    const settingsTheme = document.getElementById("settingsTheme");
-    const settingsColor = document.getElementById("settingsColor");
-    settingsTheme.addEventListener("change", function (event) {
-      const textColor = event.target.options[event.target.selectedIndex]
-        .dataset.textcolor;
-      const bgColor = event.target.options[event.target.selectedIndex]
-        .dataset.bgcolor;
-
-      cssSelectorUi.forEach(function (element) {
-        element.classList.remove(
-          "calcite-text-dark", "calcite-text-light",
-          "calcite-bg-dark", "calcite-bg-light",
-          "calcite-bg-custom"
-        );
-        element.classList.add(textColor, bgColor);
-        element.classList.remove(
-          "calcite-bgcolor-dark-blue",
-          "calcite-bgcolor-blue-75",
-          "calcite-bgcolor-dark-green",
-          "calcite-bgcolor-dark-brown",
-          "calcite-bgcolor-darkest-grey",
-          "calcite-bgcolor-lightest-grey",
-          "calcite-bgcolor-black-75",
-          "calcite-bgcolor-dark-red"
-        );
-        element.classList.add(bgColor);
-      });
-      settingsColor.value = "";
-    });
-
-    // Color - custom color
-    settingsColor.addEventListener("change", function (event) {
-      const customColor = event.target.value
-      const textColor = event.target.options[event.target.selectedIndex]
-        .dataset.textcolor;
-      const bgColor = event.target.options[event.target.selectedIndex]
-        .dataset.bgcolor;
-
-      cssSelectorUi.forEach(function (element) {
-        element.classList.remove(
-          "calcite-text-dark", "calcite-text-light",
-          "calcite-bg-dark", "calcite-bg-light",
-          "calcite-bg-custom"
-        );
-        element.classList.add(textColor, bgColor);
-        element.classList.remove(
-          "calcite-bgcolor-dark-blue",
-          "calcite-bgcolor-blue-75",
-          "calcite-bgcolor-dark-green",
-          "calcite-bgcolor-dark-brown",
-          "calcite-bgcolor-darkest-grey",
-          "calcite-bgcolor-lightest-grey",
-          "calcite-bgcolor-black-75",
-          "calcite-bgcolor-dark-red"
-        );
-        element.classList.add(customColor);
-        if (!customColor) {
-          settingsTheme.dispatchEvent(new Event("change"));
-        }
-      });
-    });
-
-    // Widgets - light (default) or dark theme
-    const settingsWidgets = document.getElementById("settingsWidgets");
-    settingsWidgets.addEventListener("change", function (event) {
-      const theme = event.target.value;
-      cssSelectorMap.classList.remove("calcite-widgets-dark",
-        "calcite-widgets-light");
-      cssSelectorMap.classList.add(theme);
-    });
-
-    // Layout - top or bottom nav position
-    const settingsLayout = document.getElementById("settingsLayout");
-    settingsLayout.addEventListener("change", function (event) {
-      const layout = event.target.value;
-      const layoutNav = event.target.options[event.target.selectedIndex]
-        .dataset.nav;
-
-      document.body.classList.remove("calcite-nav-bottom",
-        "calcite-nav-top");
-      document.body.classList.add(layout);
-
-      const nav = document.querySelector("nav");
-      nav.classList.remove("navbar-fixed-bottom", "navbar-fixed-top");
-      nav.classList.add(layoutNav);
-      setViewPadding(layout);
-    });
-
-    // Set view padding for widgets based on navbar position
-    function setViewPadding(layout) {
-      let padding, uiPadding;
-      // Top
-      if (layout === "calcite-nav-top") {
-        padding = {
-          padding: {
-            top: 50,
-            bottom: 0
-          }
-        };
-        uiPadding = {
-          padding: {
-            top: 15,
-            right: 15,
-            bottom: 30,
-            left: 15
-          }
-        };
-      } else { // Bottom
-        padding = {
-          padding: {
-            top: 0,
-            bottom: 50
-          }
-        };
-        uiPadding = {
-          padding: {
-            top: 30,
-            right: 15,
-            bottom: 15,
-            left: 15
-          }
-        };
-      }
-      app.mapView.set(padding);
-      app.mapView.ui.set(uiPadding);
-      app.sceneView.set(padding);
-      app.sceneView.ui.set(uiPadding);
-      // Reset popup
-      if (app.activeView.popup.visible && app.activeView.popup.dockEnabled) {
-        app.activeView.popup.visible = false;
-        app.activeView.popup.visible = true;
-      }
-    }
 
   });
