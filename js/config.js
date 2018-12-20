@@ -34,10 +34,15 @@ serviciosKML[5] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedAmarilla.km
 serviciosKML[6] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Municipios.kmz";
 serviciosKML[7] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Cesiones.kmz";
 
+/*Definicion de servicios Feature*/
+var serviciosFeature = [];
+serviciosFeature[1] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/1";
+serviciosFeature[2] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/2";
+serviciosFeature[3] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/3";
+
 /*Definicion de servicios de ortofotos*/
 /*Nombre servicio|visible|escala minima|escala maxima|id del check de la orto*/
 var serviciosOrtofotos = new Array()
-
 
 serviciosOrtofotos[0] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1945_AMPLIADO/MapServer|false|1|10000000|ortos1945";
 serviciosOrtofotos[1] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1956_AMPLIADO/MapServer|false|1|10000000|ortos1956";
@@ -90,6 +95,7 @@ var wmsLayer;
 var graphicsLayer;
 
 var kmlLayers = [];
+var featureLayers = [];
 
 var dojoConfig = {
   packages: [{

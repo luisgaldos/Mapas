@@ -103,6 +103,13 @@ require([
       kmlLayers.push(layer);
     }
 
+    for(let i = 0; i < serviciosFeature.length; i++) {
+      layer = new FeatureLayer ({
+        url: serviciosFeature[i]// url to the service
+      });
+      featureLayers.push(layer);
+    }
+
     // Load KML Layers Panel
     loadKMLLayersPanel();
 
@@ -199,7 +206,6 @@ require([
     locateWidget = new Locate({
       view: app.activeView  // Attaches the Locate button to the view
     });
-
     app.activeView.ui.add(locateWidget, "top-left");
 
     // Create the search widget and add it to the navbar instead of view

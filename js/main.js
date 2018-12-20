@@ -49,6 +49,7 @@ function setActiveView(view) {
     if (view == app.mapView) {
         map.layers.add(graphicsLayer);
         map.layers.addMany(kmlLayers);
+        map.layers.addMany(featureLayers);
         document.getElementById(MEASURE_3D_PANEL).style.display = "none";   // Hide 3D measure panel
         document.getElementById(MEASURE_2D_PANEL).style.display = "block";  // Show 2D measure panel
     } else {
