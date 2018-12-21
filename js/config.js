@@ -1,78 +1,82 @@
 // Constants for init
 const INITIAL_LONGITUDE = -2.930842;
 const INITIAL_LATITUDE = 43.250414;
-const INITIAL_SCALE = 5000;
-const INITIAL_ZOOM = 14;
+const INITIAL_SCALE = 150000;
+const INITIAL_ZOOM = 5;
 
 // DOM elements
 const MAP_CONTAINER = "mapViewDiv"; // 2D container
 const SCENE_CONTAINER = "sceneViewDiv"; // 3D container
-const SEARCHER_CONTAINER = "searchWidgetDiv"; // Search container
+const SEARCHER_CONTAINER =  document.getElementById("searchWidgetDiv"); // Search container
 
-const LAYER_PANEL = "layerPanelDiv";
-const MEASURE_2D_PANEL = "measure2DPanelDiv";
-const DISTANCE_2D_MEASURE_PANEL = "distanceMeasure2DPanelDiv";
-const AREA_2D_MEASURE_PANEL = "areaMeasure2DPanelDiv";
+const LAYER_PANEL =  document.getElementById("layerPanelDiv");
+const MEASURE_2D_PANEL =  document.getElementById("measure2DPanelDiv");
+const DISTANCE_2D_MEASURE_PANEL =  document.getElementById("distanceMeasure2DPanelDiv");
+const AREA_2D_MEASURE_PANEL =  document.getElementById("areaMeasure2DPanelDiv");
 
-const MEASURE_3D_PANEL = "measure3DPanelDiv";
-const DISTANCE_3D_MEASURE_PANEL = "distanceMeasure3DPanelDiv";
-const AREA_3D_MEASURE_PANEL = "areaMeasure3DPanelDiv";
+const MEASURE_3D_PANEL =  document.getElementById("measure3DPanelDiv");
+const DISTANCE_3D_MEASURE_PANEL =  document.getElementById("distanceMeasure3DPanelDiv");
+const AREA_3D_MEASURE_PANEL =  document.getElementById("areaMeasure3DPanelDiv");
 
 const KML_LAYERS_PANEL = document.getElementById('KMLLayersPanelDiv');
-const DRAW_PANEL = "drawPanelDiv";
+const BASEMAPS_PANEL = document.getElementById('basemapPanelDiv');
+const DRAW_PANEL =  document.getElementById("drawPanelDiv");
 
 const DISTANCE_MEASURE_BTN = document.getElementById("distanceButton");
 const AREA_MEASURE_BTN = document.getElementById("areaButton");
 
 /*Definicion de servicios KML*/
 var serviciosKML = [];
-serviciosKML[1] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedRoja.kmz";
-serviciosKML[2] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedVerde.kmz";
-serviciosKML[3] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedNaranja.kmz";
-serviciosKML[4] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedAzul.kmz";
-serviciosKML[5] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedAmarilla.kmz";
-serviciosKML[6] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Municipios.kmz";
-serviciosKML[7] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Cesiones.kmz";
+serviciosKML[0] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedRoja.kmz";
+serviciosKML[1] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedVerde.kmz";
+serviciosKML[2] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedNaranja.kmz";
+serviciosKML[3] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedAzul.kmz";
+serviciosKML[4] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/RedAmarilla.kmz";
+serviciosKML[5] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Municipios.kmz";
+serviciosKML[6] = "http://apli.bizkaia.net/APPS/DANOK/GHCA/TRAMOS/Cesiones.kmz";
 
 /*Definicion de servicios Feature*/
 var serviciosFeature = [];
-serviciosFeature[1] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/1";
-serviciosFeature[2] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/2";
-serviciosFeature[3] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/3";
+
+serviciosFeature[0] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/1";
+serviciosFeature[1] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/2";
+serviciosFeature[2] = "http://arcgis.bizkaia.net/arcgis/rest/services/OBRASPUBLICAS/GH_Carreteras_Mobile/MapServer/3";
 
 /*Definicion de servicios de ortofotos*/
 /*Nombre servicio|visible|escala minima|escala maxima|id del check de la orto*/
 var serviciosOrtofotos = new Array()
 
-serviciosOrtofotos[0] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1945_AMPLIADO/MapServer|false|1|10000000|ortos1945";
-serviciosOrtofotos[1] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1956_AMPLIADO/MapServer|false|1|10000000|ortos1956";
-serviciosOrtofotos[2] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/URBANISMO_1965_AMPLIADO/MapServer|false|1|10000000|ortos1965";
-serviciosOrtofotos[3] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1977_AMPLIADO/MapServer|false|1|10000000|ortos1977";
-serviciosOrtofotos[4] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/URBANISMO_1983_AMPLIADO/MapServer|false|1|10000000|ortos1983";
-serviciosOrtofotos[5] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1984_AMPLIADO/MapServer|false|1|10000000|ortos1984";
-serviciosOrtofotos[6] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/URBANISMO_1990_AMPLIADO/MapServer|false|1|10000000|ortos_urbanismo_1990";
-serviciosOrtofotos[7] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1990_AMPLIADO/MapServer|false|1|10000000|ortos1990";
-serviciosOrtofotos[8] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/URBANISMO_1995_AMPLIADO/MapServer|false|1|10000000|ortos1995";
-serviciosOrtofotos[9] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2000_AMPLIADO/MapServer|false|1|10000000|ortos2000";
-serviciosOrtofotos[10] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2002_AMPLIADO/MapServer|false|1|10000000|ortos2002";
-serviciosOrtofotos[11] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2004_AMPLIADO/MapServer|false|1|10000000|ortos2004";
-serviciosOrtofotos[12] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2005_AMPLIADO/MapServer|false|1|10000000|ortos2005";
-serviciosOrtofotos[13] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2006_AMPLIADO/MapServer|false|1|10000000|ortos2006";
-serviciosOrtofotos[14] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2007_AMPLIADO/MapServer|false|1|10000000|ortos2007";
-serviciosOrtofotos[15] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2008_AMPLIADO/MapServer|false|1|10000000|ortos2008";
-serviciosOrtofotos[16] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2009_AMPLIADO/MapServer|false|1|10000000|ortos2009";
-serviciosOrtofotos[17] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2010_AMPLIADO/MapServer|false|1|10000000|ortos2010";
-serviciosOrtofotos[18] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2011_AMPLIADO/MapServer|false|1|10000000|ortos2011";
-serviciosOrtofotos[19] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2012_AMPLIADO/MapServer|false|1|10000000|ortos2012";
-serviciosOrtofotos[20] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2013_AMPLIADO/MapServer|false|1|10000000|ortos2013";
-serviciosOrtofotos[21] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2014_AMPLIADO/MapServer|false|1|10000000|ortos2014";
-serviciosOrtofotos[22] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2015_FINAL_AMPLIADO/MapServer|false|1|10000000|ortos2015";
-serviciosOrtofotos[23] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2016_AMPLIADO/MapServer|true|1|10000000|ortos2016";
-serviciosOrtofotos[24] = "http://arcgis.aldundia.bfa/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2017_AMPLIADO/MapServer|true|1|10000000|ortos2017";
+serviciosOrtofotos[0] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1945/MapServer";
+serviciosOrtofotos[1] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1956/MapServer";
+serviciosOrtofotos[2] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/URBANISMO_1965/MapServer";
+serviciosOrtofotos[3] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1977/MapServer";
+serviciosOrtofotos[4] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/URBANISMO_1983/MapServer";
+serviciosOrtofotos[5] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1984/MapServer";
+serviciosOrtofotos[6] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/URBANISMO_1990/MapServer";
+serviciosOrtofotos[7] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_1990/MapServer";
+serviciosOrtofotos[8] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/URBANISMO_1995/MapServer";
+serviciosOrtofotos[9] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2000/MapServer";
+serviciosOrtofotos[10] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2002/MapServer";
+serviciosOrtofotos[11] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2004/MapServer";
+serviciosOrtofotos[12] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2005/MapServer";
+serviciosOrtofotos[13] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2006/MapServer";
+serviciosOrtofotos[14] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2007/MapServer";
+serviciosOrtofotos[15] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2008/MapServer";
+serviciosOrtofotos[16] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2009/MapServer";
+serviciosOrtofotos[17] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2010/MapServer";
+serviciosOrtofotos[18] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2011/MapServer";
+serviciosOrtofotos[19] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2012_AMPLIADO/MapServer";
+serviciosOrtofotos[20] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2013_AMPLIADO/MapServer";
+serviciosOrtofotos[21] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2014_AMPLIADO/MapServer";
+serviciosOrtofotos[22] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2015_AMPLIADO/MapServer";
+serviciosOrtofotos[23] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2016_AMPLIADO/MapServer";
+serviciosOrtofotos[24] = "http://arcgis.bizkaia.net/arcgis/rest/services/ORTOFOTOS/GOBIERNO_VASCO_2017_AMPLIADO/MapServer";
+
 
 /* Variables comunes */
 var app;
 var map;  // Map
+var basemap; // Mapa base
 var draw;
 var mapView; // 2D view
 var sceneView; // 3D view
@@ -95,7 +99,12 @@ var wmsLayer;
 var graphicsLayer;
 
 var kmlLayers = [];
+var tileLayers = [];
 var featureLayers = [];
+
+
+var URLortoActual = serviciosOrtofotos[serviciosOrtofotos.length-1];
+
 
 var dojoConfig = {
   packages: [{

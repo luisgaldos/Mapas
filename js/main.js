@@ -1,4 +1,37 @@
+
+function cargarOrtofotosEnPanel() {
+
+    let ul = document.createElement('ul');
+    BASEMAPS_PANEL.appendChild(ul);
+    let li;
+
+    for (let i = 0; i < serviciosOrtofotos.length; i++) {
+
+        li = document.createElement('li');
+        li.innerHTML =  getNumbersInString(serviciosOrtofotos[i]);
+       ul.appendChild(li);
+
+    }
+}
+
+// Cargamos los títulos de las ortofotos de la URL, lo cual es más óptimo que cargar todos los mapas.
+function getNumbersInString(string) {
+    var tmp = string.split("");
+    var map = tmp.map(function (current) {
+        if (!isNaN(parseInt(current))) {
+            return current;
+        }
+    });
+
+    var numbers = map.filter(function (value) {
+        return value != undefined;
+    });
+
+    return numbers.join("");
+}
+
 function loadKMLLayersPanel() {
+
 
     // Add layers to Panel
     let ul, li, label, checkbox;
@@ -11,6 +44,7 @@ function loadKMLLayersPanel() {
     // Creates the element of the list, one label and one checkbox per layer
     kmlLayers.forEach(function (item) {
 
+        console.log('%o', item);
         li = document.createElement('li');
         label = document.createElement('label');
 
@@ -46,28 +80,23 @@ function loadKMLLayersPanel() {
 
 function setActiveView(view) {
 
-    if (view == app.mapView) {
+    if (view == app.mapView) {  // Vista 2D
+
         map.layers.add(graphicsLayer);
         map.layers.addMany(kmlLayers);
-        map.layers.addMany(featureLayers);
-        document.getElementById(MEASURE_3D_PANEL).style.display = "none";   // Hide 3D measure panel
-        document.getElementById(MEASURE_2D_PANEL).style.display = "block";  // Show 2D measure panel
-    } else {
+
+        MEASURE_3D_PANEL.style.display = "none";   // Hide 3D measure panel
+        MEASURE_2D_PANEL.style.display = "block";  // Show 2D measure panel
+
+    } else {    // Vista 3D
+
         map.layers.removeAll()
-        document.getElementById(MEASURE_2D_PANEL).style.display = "none";   // Hide 2D measure panel
-        document.getElementById(MEASURE_3D_PANEL).style.display = "block";   // Show 3D measure panel
+        //map.layers.addMany(tileLayers);
+        MEASURE_2D_PANEL.style.display = "none";   // Hide 2D measure panel
+        MEASURE_3D_PANEL.style.display = "block";   // Show 3D measure panel
     }
 
     app.activeView = view;
-}
-
-function showHideDrawWidget() {
-
-    if (sketchWidget.visible == true ) {
-        sketchWidget.visible = false;
-    } else {
-        sketchWidget.visible = true;
-    }
 }
 
 /******************************************************************

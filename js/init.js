@@ -1,13 +1,12 @@
 
 require([
   "esri/Map",
+  "esri/Basemap",
   "esri/views/MapView",
   "esri/views/SceneView",
-  
 
   // Widgets
   "esri/widgets/Search",
-  "esri/widgets/BasemapGallery",
   "esri/widgets/ScaleBar",
   "esri/widgets/Locate",
   "esri/widgets/Sketch",        // For Draw
@@ -22,6 +21,7 @@ require([
   "esri/layers/GraphicsLayer",  // For Draw
   "esri/layers/FeatureLayer",
   "esri/layers/MapImageLayer",
+  "esri/layers/TileLayer",
   "esri/layers/TileLayer",
 
   "esri/core/watchUtils",
@@ -39,13 +39,13 @@ require([
   "@dojo/framework/shim/array"
 ], function (
   Map,
+  Basemap,
   MapView,
   SceneView,
   Search,
-  Basemaps,
   ScaleBar,
   Locate,
-  Sketch, 
+  Sketch,
   DistanceMeasurement2D,
   AreaMeasurement2D,
   DirectLineMeasurement3D,
@@ -69,22 +69,8 @@ require([
      *
      ******************************************************************/
 
-    app = {
-      center: [INITIAL_LONGITUDE, INITIAL_LATITUDE],  // Longitud, latitud
-      scale: INITIAL_SCALE,
-      basemap: "streets",
-      viewPadding: {
-        top: 50,
-        bottom: 0
-      },
-      uiComponents: ["zoom", "compass", "attribution"],
-      mapView: null,
-      sceneView: null,
-      containerMap: MAP_CONTAINER,
-      containerScene: SCENE_CONTAINER,
-      activeView: null,
-      searchWidget: null
-    };
+    inicializarApp();
+
 
     /******************************************************************
      *
@@ -92,34 +78,41 @@ require([
      *
      ******************************************************************/
 
-      // KML Layers
-    
+    // Crear capa para poder dibujar sobre el mapa
+    graphicsLayer = new GraphicsLayer();
 
+    // Crear el map y añadir el mapa base
+    map = new Map({
+      basemap: basemap
+    });
+
+    cargarOrtofotosEnPanel();
+    function cargarOrtoFoto(indice) {
+      // Crear un mapa base con la ortofoto seleccionada
+      URLortoActual = serviciosOrtofotos[indice];
+      basemap = new Basemap({
+        baseLayers: [
+          new TileLayer(URLortoActual)
+        ]
+      });
+  
+      map.basemap = basemap;
+  
+    }
+    
+    cargarOrtoFoto(serviciosOrtofotos.length-1);
+
+    // Cargar las capas KML
     let layer;
-    for(let i = 0; i < serviciosKML.length; i++) {
-      layer = new KMLLayer ({
-        url: serviciosKML[i]// url to the service
+    for (let i = 0; i < serviciosKML.length; i++) {
+      layer = new KMLLayer({
+        url: serviciosKML[i]  // url to the service
       });
       kmlLayers.push(layer);
     }
 
-    for(let i = 0; i < serviciosFeature.length; i++) {
-      layer = new FeatureLayer ({
-        url: serviciosFeature[i]// url to the service
-      });
-      featureLayers.push(layer);
-    }
-
-    // Load KML Layers Panel
+    // Cargar en el menú los KML leídos
     loadKMLLayersPanel();
-
-    graphicsLayer = new GraphicsLayer();
-
-    // Map
-    map = new Map({
-      basemap: app.basemap,
-      layers: [graphicsLayer]   // Add draw layer to map
-    });
 
     // 2D view
     app.mapView = new MapView({
@@ -140,7 +133,6 @@ require([
         view: app.mapView,
         container: DRAW_PANEL
       });
-      //app.mapView.ui.add(sketchWidget, "top-right");
     });
 
     // 3D view
@@ -220,11 +212,7 @@ require([
       CalciteMapsArcGIS.setSearchExpandEvents(app.searchWidget);
     });
 
-    // Create basemap widget
-    app.basemapWidget = new Basemaps({
-      view: app.activeView,
-      container: "basemapPanelDiv"
-    });
+
 
     /******************************************************************
      *
@@ -271,3 +259,23 @@ require([
     });
 
   });
+
+
+function inicializarApp() {
+  app = {
+    center: [INITIAL_LONGITUDE, INITIAL_LATITUDE],  // Longitud, latitud
+    scale: INITIAL_SCALE,
+    basemap: null,
+    viewPadding: {
+      top: 50,
+      bottom: 0
+    },
+    uiComponents: ["zoom", "compass", "attribution"],
+    mapView: null,
+    sceneView: null,
+    containerMap: MAP_CONTAINER,
+    containerScene: SCENE_CONTAINER,
+    activeView: null,
+    searchWidget: null
+  };
+}
