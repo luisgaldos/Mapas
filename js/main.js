@@ -1,17 +1,58 @@
+function cargarSelectEscalas() {
 
-function cargarOrtofotosEnPanel() {
+    let option;
+    for(let i = 0; i < ESCALAS_RECOMENDADAS.length; i++) {
+        option = document.createElement('option');
+        option.value = ESCALAS_RECOMENDADAS[i];
+        option.innerHTML = ESCALAS_RECOMENDADAS[i];
+        SELECT_ESCALAS.appendChild(option);
+    }
+    
+}
 
-    let ul = document.createElement('ul');
-    BASEMAPS_PANEL.appendChild(ul);
-    let li;
+function zoom( delta ) {
+    
+    if (delta > 0) {
+        
+        if (escalaActual < ESCALAS_RECOMENDADAS.length-1) {
+            console.log('aumentar escala');
+            escalaActual++;
+            setEscala(escalaActual);
+        }      
+    } else {
+        if (escalaActual > 0) {
+            console.log('disminuir escala');
+            escalaActual--;    
+            setEscala(escalaActual);  
+        }
+    }
+}
+
+
+function setEscala(indice) {
+
+    app.activeView.scale = ESCALAS_RECOMENDADAS[indice];
+    SELECT_ESCALAS.selectedIndex = indice;
+    escalaActual = indice;
+}
+    
+
+function cargarSelectCapasBase() {
+
+    let option, value;
+    SELECT_ORTOFOTOS.style.fontSize = "1.4em";
 
     for (let i = 0; i < serviciosOrtofotos.length; i++) {
 
-        li = document.createElement('li');
-        li.innerHTML =  getNumbersInString(serviciosOrtofotos[i]);
-       ul.appendChild(li);
+        option = document.createElement('option');
+        value =  getNumbersInString(serviciosOrtofotos[i]);
+        option.innerHTML = value;
+        option.value = i; // El valor será la posición en el array
+        SELECT_ORTOFOTOS.appendChild(option);
 
     }
+
+    SELECT_ORTOFOTOS.selectedIndex = serviciosOrtofotos.length-1;
 }
 
 // Cargamos los títulos de las ortofotos de la URL, lo cual es más óptimo que cargar todos los mapas.
@@ -30,177 +71,7 @@ function getNumbersInString(string) {
     return numbers.join("");
 }
 
-function loadKMLLayersPanel() {
 
-
-    // Add layers to Panel
-    let ul, li, label, checkbox;
-
-    // Create a list and add to the view
-    ul = document.createElement('ul');
-    ul.style.listStyle = "none";
-    KML_LAYERS_PANEL.appendChild(ul);
-
-    // Creates the element of the list, one label and one checkbox per layer
-    kmlLayers.forEach(function (item) {
-
-        console.log('%o', item);
-        li = document.createElement('li');
-        label = document.createElement('label');
-
-        // Separates a string ex: ThisIsATextExample -> This is a text example
-        let s = item.title.split(/(?=[A-Z])/);
-        let titulo = s.toString().replace(/,/g, " ");
-        label.innerHTML = titulo;
-        li.style.fontSize = "1.4em";
-
-        ul.appendChild(li);
-        li.appendChild(label);
-
-        checkbox = document.createElement("input");
-        checkbox.setAttribute("type", "checkbox");
-        checkbox.id = "ck" + item.id;
-        checkbox.style.cssFloat = "right";
-        checkbox.checked = true;
-
-        label.htmlFor = "ck" + item.id;
-
-        li.appendChild(checkbox);
-
-        checkbox.addEventListener('change', function () {
-            if (this.checked) {
-                item.visible = true;
-            } else {
-                item.visible = false;
-            }
-        });
-
-    });
-}
-
-function setActiveView(view) {
-
-    if (view == app.mapView) {  // Vista 2D
-
-        map.layers.add(graphicsLayer);
-        map.layers.addMany(kmlLayers);
-
-        MEASURE_3D_PANEL.style.display = "none";   // Hide 3D measure panel
-        MEASURE_2D_PANEL.style.display = "block";  // Show 2D measure panel
-
-    } else {    // Vista 3D
-
-        map.layers.removeAll()
-        //map.layers.addMany(tileLayers);
-        MEASURE_2D_PANEL.style.display = "none";   // Hide 2D measure panel
-        MEASURE_3D_PANEL.style.display = "block";   // Show 3D measure panel
-    }
-
-    app.activeView = view;
-}
-
-/******************************************************************
- *
- * Apply Calcite Maps CSS classes to change application on the fly
- *
- * For more information about the CSS styles or Sass build visit:
- * http://github.com/esri/calcite-maps
- *
- ******************************************************************/
-
-const cssSelectorUi = [document.querySelector(".calcite-navbar"),
-document.querySelector(".calcite-panels")
-];
-const cssSelectorMap = document.querySelector(".calcite-map");
-
-// Theme - light (default) or dark theme
-const settingsTheme = document.getElementById("settingsTheme");
-const settingsColor = document.getElementById("settingsColor");
-settingsTheme.addEventListener("change", function (event) {
-    const textColor = event.target.options[event.target.selectedIndex]
-        .dataset.textcolor;
-    const bgColor = event.target.options[event.target.selectedIndex]
-        .dataset.bgcolor;
-
-    cssSelectorUi.forEach(function (element) {
-        element.classList.remove(
-            "calcite-text-dark", "calcite-text-light",
-            "calcite-bg-dark", "calcite-bg-light",
-            "calcite-bg-custom"
-        );
-        element.classList.add(textColor, bgColor);
-        element.classList.remove(
-            "calcite-bgcolor-dark-blue",
-            "calcite-bgcolor-blue-75",
-            "calcite-bgcolor-dark-green",
-            "calcite-bgcolor-dark-brown",
-            "calcite-bgcolor-darkest-grey",
-            "calcite-bgcolor-lightest-grey",
-            "calcite-bgcolor-black-75",
-            "calcite-bgcolor-dark-red"
-        );
-        element.classList.add(bgColor);
-    });
-    settingsColor.value = "";
-});
-
-// Color - custom color
-settingsColor.addEventListener("change", function (event) {
-    const customColor = event.target.value
-    const textColor = event.target.options[event.target.selectedIndex]
-        .dataset.textcolor;
-    const bgColor = event.target.options[event.target.selectedIndex]
-        .dataset.bgcolor;
-
-    cssSelectorUi.forEach(function (element) {
-        element.classList.remove(
-            "calcite-text-dark", "calcite-text-light",
-            "calcite-bg-dark", "calcite-bg-light",
-            "calcite-bg-custom"
-        );
-        element.classList.add(textColor, bgColor);
-        element.classList.remove(
-            "calcite-bgcolor-dark-blue",
-            "calcite-bgcolor-blue-75",
-            "calcite-bgcolor-dark-green",
-            "calcite-bgcolor-dark-brown",
-            "calcite-bgcolor-darkest-grey",
-            "calcite-bgcolor-lightest-grey",
-            "calcite-bgcolor-black-75",
-            "calcite-bgcolor-dark-red"
-        );
-        element.classList.add(customColor);
-        if (!customColor) {
-            settingsTheme.dispatchEvent(new Event("change"));
-        }
-    });
-});
-
-// Widgets - light (default) or dark theme
-const settingsWidgets = document.getElementById("settingsWidgets");
-settingsWidgets.addEventListener("change", function (event) {
-    const theme = event.target.value;
-    cssSelectorMap.classList.remove("calcite-widgets-dark",
-        "calcite-widgets-light");
-    cssSelectorMap.classList.add(theme);
-});
-
-// Layout - top or bottom nav position
-const settingsLayout = document.getElementById("settingsLayout");
-settingsLayout.addEventListener("change", function (event) {
-    const layout = event.target.value;
-    const layoutNav = event.target.options[event.target.selectedIndex]
-        .dataset.nav;
-
-    document.body.classList.remove("calcite-nav-bottom",
-        "calcite-nav-top");
-    document.body.classList.add(layout);
-
-    const nav = document.querySelector("nav");
-    nav.classList.remove("navbar-fixed-bottom", "navbar-fixed-top");
-    nav.classList.add(layoutNav);
-    setViewPadding(layout);
-});
 
 // Set view padding for widgets based on navbar position
 function setViewPadding(layout) {

@@ -29,7 +29,7 @@
 
     <!-- Navbar -->
 
-    <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light calcite-bg-dark">
+    <nav class="navbar calcite-navbar navbar-fixed-top calcite-text-light">
       <!-- Menu -->
       <div class="dropdown calcite-dropdown calcite-text-dark calcite-bg-light" role="presentation">
         <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
@@ -47,36 +47,33 @@
           <li><a class="hidden-md hidden-lg" href="#sceneTab" aria-controls="sceneTab" role="tab" data-toggle="tab">
               Scene</a></li>
           <li><a role="button" data-target="#panelKMLLayers" aria-haspopup="true"><span class="glyphicon glyphicon-duplicate"></span>
-              KML Layers</a></li>
-          <li><a role="button" data-target="#panelBasemaps" aria-haspopup="true"><span class="glyphicon glyphicon-th-large"></span>
-              Ortofotos</a></li>
+              Capas</a></li>
           <li><a role="button" data-target="#panelDraw" aria-haspopup="true"><span class="glyphicon glyphicon-pencil"></span>
-              Draw</a></li>
+              Dibujar</a></li>
           <li><a role="button" data-target="#panelMeasure" aria-haspopup="true"><span class="glyphicon glyphicon-arrow-right"></span>
-              Measure</a></li>
-          <li><a role="button" data-target="#panelSettings" aria-haspopup="true"><span class="glyphicon glyphicon-cog"></span>
-              Settings</a></li>
+              Medir</a></li>
+          <li><a role="button" data-target="#panelBuscar" aria-haspopup="true"><span class="glyphicon glyphicon-search"></span>
+              Buscar</a></li>
           <li><a role="button" id="calciteToggleNavbar" aria-haspopup="true"><span class="glyphicon glyphicon-fullscreen"></span>
               Full Map</a></li>
         </ul>
       </div>
+
       <!-- Title -->
       <div class="calcite-title calcite-overflow-hidden">
         <span class="calcite-title-main">Bizkaia</span>
         <span class="calcite-title-divider hidden-xs"></span>
         <span class="calcite-title-sub hidden-xs">Visor de capas</span>
       </div>
+      
       <!-- Nav -->
+      
       <ul class="nav navbar-nav calcite-nav">
+        
         <li class="active"><a id="mapNav" class="hidden-xs hidden-sm" href="#mapTab" aria-controls="mapTab"
             aria-expanded="true" role="tab" data-toggle="tab" data-tooltip="tip" title="2D View" data-placement="bottom">Map</a></li>
         <li><a id="sceneNav" class="hidden-xs hidden-sm" href="#sceneTab" aria-controls="sceneTab" role="tab"
             data-toggle="tab" data-tooltip="tip" title="3D View" data-placement="bottom">Scene</a></li>
-        <li>
-          <div class="calcite-navbar-search calcite-search-expander">
-            <div id="searchWidgetDiv"></div>
-          </div>
-        </li>
       </ul>
     </nav>
     <!--/.calcite-navbar -->
@@ -93,6 +90,8 @@
         </div>
       </div>
     </div>
+
+
     <!-- /.calcite-map -->
 
     <!-- Panels -->
@@ -106,14 +105,34 @@
           <div class="panel-title">
             <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseKMLLayers"
               aria-expanded="false" aria-controls="collapseKMLLayers"><span class="glyphicon glyphicon-duplicate"
-                aria-hidden="true"></span><span class="panel-label">KML Layers</span></a>
+                aria-hidden="true"></span><span class="panel-label">Capas</span></a>
             <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelKMLLayers"><span class="esri-icon esri-icon-close"
                 aria-hidden="true"></span></a>
           </div>
         </div>
         <div id="collapseKMLLayers" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingKMLLayers">
           <div class="panel-body">
-            <div id="KMLLayersPanelDiv"></div>
+            <div id="KMLLayersPanelDiv">
+              <!--Capas Base-->
+              <div>
+                  <label for="selectOrtofotos">Capas Base</label>
+                  <select name="selectOrtofotos" id="selectOrtofotos"></select>
+              </div>
+              <hr>
+             <!--Capas-->
+              <div>
+                <label for="ulCapas">Capas</label>
+                <button type="button" id="btnAddCapa">Añadir</button>
+                <div id="divCapas">
+                  <ul id="ulCapas"></ul>
+                </div>
+                
+                <div id="divCrearCapa">º
+                  <input type="radio" name="tipoCapa" value="kml"> KML
+                  <input type="radio" name="tipoCapa" value="wms"> WMS
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -165,114 +184,59 @@
         </div>
       </div>
 
-      <!-- Draw Panel -->
+        <!-- Panel dibujar -->
 
-      <div id="panelDraw" class="panel collapse">
-        <div id="headingDraw" class="panel-heading" role="tab">
-          <div class="panel-title">
-            <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseDraw" aria-expanded="false"
-              aria-controls="collapseDraw"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span
-                class="panel-label">Draw</span></a>
-            <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelDraw"><span class="esri-icon esri-icon-close"
-                aria-hidden="true"></span></a>
+        <div id="panelDraw" class="panel collapse">
+          <div id="headingDraw" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseDraw" aria-expanded="false"
+                aria-controls="collapseDraw"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span><span
+                  class="panel-label">Dibujar</span></a>
+              <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelDraw"><span class="esri-icon esri-icon-close"
+                  aria-hidden="true"></span></a>
+            </div>
           </div>
-        </div>
-        <div id="collapseDraw" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDraw">
-          <div class="panel-body">
-            <div id="drawPanelDiv"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Panel Settings -->
-
-      <div id="panelSettings" class="panel panel-map collapse">
-        <div id="headingSettings" class="panel-heading">
-          <div class="panel-title">
-            <a class="panel-toggle" role="button" data-toggle="collapse" href="#collapseSettings" data-parent="#panelAccordion"
-              aria-expanded="true" aria-controls="collapseSettings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
-                class="panel-label">Settings</span></a>
-            <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelSettings"><span class="esri-icon esri-icon-close"
-                aria-hidden="true"></span></a>
-          </div>
-        </div>
-        <div id="collapseSettings" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSettings">
-          <div class="panel-body">
-            <div class="form-horizontal">
-
-              <!-- Theme -->
-
-              <div class="form-group">
-                <label for="settingsTheme" class="col-xs-3 control-label">Theme</label>
-                <div class="col-xs-9">
-                  <select id="settingsTheme" class="form-control">
-                    <option value="calcite-dark" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-dark"
-                      selected>Calcite Dark</option>
-                    <option value="calcite-light" data-textcolor="calcite-text-dark" data-bgcolor="calcite-bg-light">Calcte
-                      Light</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Color -->
-
-              <div class="form-group">
-                <label for="settingsColor" class="col-xs-3 control-label">Color</label>
-                <div class="col-xs-9">
-                  <select id="settingsColor" class="form-control">
-                    <option value="" data-theme="calcite-theme-light">Calcite
-                      Default</option>
-                    <option value="calcite-bgcolor-dark-blue" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Dark Blue</option>
-                    <option value="calcite-bgcolor-dark-green" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Dark Green</option>
-                    <option value="calcite-bgcolor-dark-brown" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Dark Brown
-                    </option>
-                    <option value="calcite-bgcolor-dark-red" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Dark Red</option>
-                    <option value="calcite-bgcolor-darkest-grey" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Darkest Grey</option>
-                    <option value="calcite-bgcolor-lightest-grey" data-textcolor="calcite-text-dark" data-bgcolor="calcite-bg-custom">Calcite
-                      Lightest Grey</option>
-                    <option value="calcite-bgcolor-blue-75" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Blue 75%</option>
-                    <option value="calcite-bgcolor-black-75" data-textcolor="calcite-text-light" data-bgcolor="calcite-bg-custom">Calcite
-                      Black 75%</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Widgets -->
-
-              <div class="form-group">
-                <label for="settingsWidgets" class="col-xs-3 control-label">Widgets</label>
-                <div class="col-xs-9">
-                  <select id="settingsWidgets" class="form-control">
-                    <option value="calcite-widgets-dark">Calcite Dark</option>
-                    <option value="calcite-widgets-light" selected>Calcite Light</option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- Layout -->
-
-              <div class="form-group">
-                <label for="settingsLayout" class="col-xs-3 control-label">Layout</label>
-                <div class="col-xs-9">
-                  <select id="settingsLayout" class="form-control">
-                    <option value="calcite-nav-top" data-nav="navbar-fixed-top" selected>Top</option>
-                    <option value="calcite-nav-bottom" data-nav="navbar-fixed-bottom">Bottom</option>
-                  </select>
-                </div>
-              </div>
-
+          <div id="collapseDraw" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDraw">
+            <div class="panel-body">
+              <div id="drawPanelDiv"></div>
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- Panel buscar -->
+        <div id="panelBuscar" class="panel collapse">
+          <div id="headingBuscar" class="panel-heading" role="tab">
+            <div class="panel-title">
+              <a class="panel-toggle collapsed" role="button" data-toggle="collapse" href="#collapseBuscar" aria-expanded="false"
+                aria-controls="collapseBuscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><span
+                  class="panel-label">Buscar</span></a>
+              <a class="panel-close" role="button" data-toggle="collapse" data-target="#panelBuscar"><span class="esri-icon esri-icon-close"
+                  aria-hidden="true"></span></a>
+            </div>
+          </div>
+          <div id="collapseDraw" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingBuscar">
+            <div class="panel-body">
+              <div id="searchWidgetDiv"></div>
+            </div>
+          </div>
+        </div>
+
     </div>
     <!-- /.calcite-panels -->
+
+    <footer class="menuInferior">
+        <label for="selectEscalas">1: </label>
+        <select name="selectEscalas" id="selectEscalas"></select>
+        <label id="divEscala"></label>
+        <span id="divCoordenadas">
+            
+            <span>Latitud</span>
+            <span id="divPosicionX"></span>
+            <span>Longitud</span>
+            <span id="divPosicionY"></span>
+        </span>
+        
+    </footer>
 
     <!-- ArcGIS JS 4 -->
     <script src="js/config.js"></script>

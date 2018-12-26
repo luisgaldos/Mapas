@@ -4,11 +4,45 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
+  font-weight: bold;
+}
+
+nav {
+  background-color: #F00 !important;
+  color: #FFF;
+}
+
+
+label, span {
   font-size: 1.4em;
+  margin-left: 1vh;
 }
 
 ul, li {
   list-style: none;
+}
+
+select {
+  display: inline-block;
+}
+
+#selectOrtofotos {
+  display: block;
+  width: 90%;
+  margin: 0 auto;
+  padding-left: 10px;
+}
+
+#divCoordenadas {
+  float: right;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  padding-left: 1vh;
+  background-color: rgb(255, 0, 0);
+  width: 100%
 }
 
 .dropdown-menu {
